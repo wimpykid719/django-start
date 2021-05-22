@@ -4,16 +4,18 @@ from django.http import HttpResponseRedirect
 from django.template import context
 from .models import Choice, Question
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
 
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     # テンプレート側でQuestion.objects.order_by('-pub_date')[:5]を呼び出す際の名前を設定している。
-    context_object_name = 'Latest_question_list'
+    context_object_name = 'latest_question_list'
 
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+
 
 # 汎用リファクタリング前
 # def index(request):
@@ -62,4 +64,5 @@ def vote(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
+        # resultsページのURLをreverseで取得してリダイレクトしている。引数としてquestion.idを渡している。
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))

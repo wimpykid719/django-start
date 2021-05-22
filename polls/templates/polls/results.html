@@ -1,6 +1,8 @@
 <h1>{{ question.question_text }}</h1>
 
 <ul>
+  <!-- 一つの質問に結びついた選択肢を全て取得している。1対多の関係になる。 -->
+
   {% for choice in question.choice_set.all %}
     <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
   {% endfor %}
