@@ -60,8 +60,10 @@ class QuestionIndexViewTests(TestCase):
     self.assertQuerysetEqual(response.context['latest_question_list'], [])
 
   def test_future_question_and_past_question(self):
+    # 片方だけ変数に入れるのはテストの合格条件を判別する際に過去質問が表示されているのを確認するため
     question = create_question(question_text="Past question.", days=-30)
     create_question(question_text="Future question.", days=30)
+    print(question)
     response = self.client.get(reverse('polls:index'))
     self.assertQuerysetEqual(
       response.context['latest_question_list'],

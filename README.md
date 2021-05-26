@@ -93,10 +93,10 @@ SECRET_KEY = 'settings.pyにあったシークレットキーまたは、新た�
 
 ```python
 try:
-		# 同じ階層のlocal_settingsファイルからSECRET_KEYをkeyとして読み込む。
-		# 参考記事等では .local_settingsとなっているが、local_settingsはファイルなので必要ない
-		# 将来的に複雑にファイルを分ける必要が出てフォルダにする場合は .が必要となる。
-		# ダメだった .local_settingsが正しかった。Django環境だとパッケージとして見なされるのか...
+    # 同じ階層のlocal_settingsファイルからSECRET_KEYをkeyとして読み込む。
+    # 参考記事等では .local_settingsとなっているが、local_settingsはファイルなので必要ない
+    # 将来的に複雑にファイルを分ける必要が出てフォルダにする場合は .が必要となる。
+    # ダメだった .local_settingsが正しかった。Django環境だとパッケージとして見なされるのか...
     from .local_settings import SECRET_KEY as key
 except ImportError:
     pass
@@ -229,10 +229,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-	path('', views.index, name='index'),
-	path('<int:question_id>/', views.detail, name='detail'),
-	path('<int:question_id>/results/', views.results, name='results'),
-	path('<int:question_id>/vote/', views.vote, name='vote'),
+    path('', views.index, name='index'),
+    path('<int:question_id>/', views.detail, name='detail'),
+    path('<int:question_id>/results/', views.results, name='results'),
+    path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
 ```
 
@@ -285,7 +285,7 @@ from django.urls import reverse
 
 def index(request):
     urlName = reverse('index')
-		print(urlName)
+    print(urlName)
     return HttpResponse("Hello, world. You're at the polls index.{0}".format(urlName))
 
 # 実行結果
@@ -318,9 +318,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-		# /articles/2003/にアクセスした場合
-		# Views.special_case_2003(request)を呼び出す。最後の/もしっかりないとマッチしない。
-		# 引数としてrequestが関数に渡る。
+    # /articles/2003/にアクセスした場合
+    # Views.special_case_2003(request)を呼び出す。最後の/もしっかりないとマッチしない。
+    # 引数としてrequestが関数に渡る。
     path('articles/2003/', views.special_case_2003),
     path('articles/<int:year>/', views.year_archive),
     path('articles/<int:year>/<int:month>/', views.month_archive),
@@ -382,14 +382,14 @@ from django.db import models
 
 # データベース作成機能を継承してモデルを書き込んでいく。
 class BookModel(models.Model):
-	# booknameという文字を入力することが出来るフィールドを作成する命令をだす。
-	# bookname = models.CharField(max_length = 50)とすると50文字までと制限をかけれる。
-	# CharFieldには必須の引数がありmax_lengthを設定しないといけない。
-	bookname = models.CharField(max_length = 50)
-	# CharFieldとほぼ同じで文字列を扱うがTextFieldの方がデータの読み出し等にコストがかかるらしい。
-	summary = models.TextField()
-	# 整数値を入れるフィールドを作成する。
-	rating = models.IntegerField()
+    # booknameという文字を入力することが出来るフィールドを作成する命令をだす。
+    # bookname = models.CharField(max_length = 50)とすると50文字までと制限をかけれる。
+    # CharFieldには必須の引数がありmax_lengthを設定しないといけない。
+    bookname = models.CharField(max_length = 50)
+    # CharFieldとほぼ同じで文字列を扱うがTextFieldの方がデータの読み出し等にコストがかかるらしい。
+    summary = models.TextField()
+    # 整数値を入れるフィールドを作成する。
+    rating = models.IntegerField()
 ```
 
 今度は少し複雑なモデルを見ていく。
@@ -406,16 +406,16 @@ ChoiceにQuestionが `ForeignKey` を使って紐ずけられている。 `on_de
 from django.db import models
 
 class Question(models.Model):
-		# Question textというフィードを作成してそこに入る文字列は200文字までと制限している。
+    # Question textというフィードを作成してそこに入る文字列は200文字までと制限している。
     question_text = models.CharField(max_length=200)
-		# 基本的には変数名がフィールド名として使用されるが、引数で文字列を渡す事でフィールド名設定する事が出来る。
+    # 基本的には変数名がフィールド名として使用されるが、引数で文字列を渡す事でフィールド名設定する事が出来る。
     pub_date = models.DateTimeField('date published')
 
 class Choice(models.Model):
-		# Question ← → Choiseと双方向のやりとりが可能となる。
+    # Question ← → Choiseと双方向のやりとりが可能となる。
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
-		# Votesフィールドは整数値を受け付ける。最初は0が入る。
+    # Votesフィールドは整数値を受け付ける。最初は0が入る。
     votes = models.IntegerField(default=0)
 ```
 
@@ -488,7 +488,7 @@ Question.objects.all()
 データが最近追加されたかどうかを判定するメソッドで `True or False` で返します。
 
 ```python
-lass Question(models.Model):
+class Question(models.Model):
   # クラス変数を定義する。データベースフィールドを表現している。
   # Charフィールドは文字のフィールド
   question_text = models.CharField(max_length=200)
@@ -501,8 +501,8 @@ lass Question(models.Model):
     # シェルで表示されるオブジェクトに質問名が使われるだけでなく
     # adminでオブジェクトを表現する際にも使用されるので追加する必要がある。
     return self.question_text
-	
-	def was_published_recently(self):
+
+  def was_published_recently(self):
     now = timezone.now()
     # now - datetime.timedelta(days=1)は今の時間から一日引いた日付を出す。
     # 2021-05-19 23:29:56.216634こんな感じの値になる。
@@ -640,12 +640,12 @@ from django.http import HttpResponse
 from .models import Question
 
 def index(request):
-	# データベースから最新5件を取得する。
-	# こんな感じのデータになる。<QuerySet [<Question: test3>, <Question: hello>, <Question: what's up?>]>
-	latest_question_list = Question.objects.order_by('-pub_date')[:5]
-	# "test3, hello, what's up?"区切った文字列にしてHttpResponseに渡す。
-	output = ', '.join([q.question_text for q in latest_question_list])
-		return HttpResponse(output)
+    # データベースから最新5件を取得する。
+    # こんな感じのデータになる。<QuerySet [<Question: test3>, <Question: hello>, <Question: what's up?>]>
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    # "test3, hello, what's up?"区切った文字列にしてHttpResponseに渡す。
+    output = ', '.join([q.question_text for q in latest_question_list])
+    return HttpResponse(output)
 
 # Leave the rest of the views (detail, results, vote) unchanged
 ```
@@ -667,14 +667,13 @@ from .models import Question
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # テンプレートを読み込む
-		template = loader.get_template('polls/index.html')
-		# 辞書型に最新5件のデータを格納する。
+    template = loader.get_template('polls/index.html')
+    # 辞書型に最新5件のデータを格納する。
     context = {
         'latest_question_list': latest_question_list,
     }
-		# 辞書型のデータをテンプレートに渡してページを作成する。その結果をHttpResponseに返す。
-    
-		return HttpResponse(template.render(context, request))
+    # 辞書型のデータをテンプレートに渡してページを作成する。その結果をHttpResponseに返す。
+    return HttpResponse(template.render(context, request))
 ```
 
 ### view.pyをさらに短くする。
@@ -715,8 +714,8 @@ def index(request):
 # 質問の詳細ページのビュー
 def detail(request, question_id):
     try:
-				# アクセスのあったURLでpkの値が変わる。/polls/1/なら1になる。
-				# データベースでエラーになるとHttp404を出力する。
+        # アクセスのあったURLでpkの値が変わる。/polls/1/なら1になる。
+        # データベースでエラーになるとHttp404を出力する。
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
@@ -849,7 +848,7 @@ path('specifics/<int:question_id>/', views.detail, name='detail'),
 
 <!-- 質問に対する選択肢を並べる -->
 {% for choice in question.choice_set.all %}
-		<!-- forloop.counterはforタグのループが何度実行されたかを表す値です。 -->
+    <!-- forloop.counterはforタグのループが何度実行されたかを表す値です。 -->
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
     <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
 {% endfor %}
@@ -890,11 +889,11 @@ def detail(request, question_id):
 
 # 質問に対して選択して投票する。
 def vote(request, question_id):
-		# まず質問があるかどうか確認する。
+    # まず質問があるかどうか確認する。
     question = get_object_or_404(Question, pk=question_id)
     try:
-				# ユーザが選択した値からpk値を取得して、それを元にモデルから選択肢のオブジェクトを取得する。
-				# なければYou didn't...choiceと表示される。
+        # ユーザが選択した値からpk値を取得して、それを元にモデルから選択肢のオブジェクトを取得する。
+        # なければYou didn't...choiceと表示される。
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
@@ -903,14 +902,14 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice.",
         })
     else:
-				# 選択肢オブジェクトから何回投票されたか表示するvotesオブジェクトをインクリメントする。
+        # 選択肢オブジェクトから何回投票されたか表示するvotesオブジェクトをインクリメントする。
         selected_choice.votes += 1
-				# データベースに保存する。
+        # データベースに保存する。
         selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-				# データの保存に成功したら、results.htmlにリダイレクトする。
+        # データの保存に成功したら、results.htmlにリダイレクトする。
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 ```
 
@@ -935,9 +934,9 @@ views.pyにresults関数を追加する。
 # 先ほどまで書いてきたviews.pyにresults関数を追加する。
 
 def results(request, question_id):
-		# 指定したpkキーにデータがあれば返す、なければエラーを返す。
+    # 指定したpkキーにデータがあれば返す、なければエラーを返す。
     question = get_object_or_404(Question, pk=question_id)
-		# 質問オブジェクトを引数で貰ってページを作成する。
+    # 質問オブジェクトを引数で貰ってページを作成する。
     return render(request, 'polls/results.html', {'question': question})
 ```
 
@@ -950,7 +949,7 @@ results.htmlを作成する。
 <!--質問の選択肢とそれに対する投票数を取得する。-->
 <ul>
 {% for choice in question.choice_set.all %}
-		<!--choice.votes|pluralizeは投票数が2以上の場合vote s とsを追加してくれる。-->
+    <!--choice.votes|pluralizeは投票数が2以上の場合vote s とsを追加してくれる。-->
     <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
 {% endfor %}
 </ul>
@@ -1065,9 +1064,9 @@ from django.views import generic
 from .models import Choice, Question
 
 class IndexView(generic.ListView):
-		# デフォルトのビューを使用せず、元々作成してあったものを使用する。
+    # デフォルトのビューを使用せず、元々作成してあったものを使用する。
     template_name = 'polls/index.html'
-		# 自動で渡されるquestion_listというコンテキスト変数の変数名を独自のものに変更している。
+    # 自動で渡されるquestion_listというコンテキスト変数の変数名を独自のものに変更している。
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
@@ -1075,10 +1074,10 @@ class IndexView(generic.ListView):
         return Question.objects.order_by('-pub_date')[:5]
 
 class DetailView(generic.DetailView):
-		# 自分がどのモデルに対して動作するかを伝えている。
-		# おそらくget_object_or_404(Question, pk=question_id)のQuestion部分を担っている。
+    # 自分がどのモデルに対して動作するかを伝えている。
+    # おそらくget_object_or_404(Question, pk=question_id)のQuestion部分を担っている。
     # pkの部分はurls.pyで先に指定してある。
-		model = Question
+    model = Question
     template_name = 'polls/detail.html'
 
 class ResultsView(generic.DetailView):
