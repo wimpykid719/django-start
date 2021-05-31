@@ -1,0 +1,7 @@
+body {
+  background: white url("images/techBlog_mobile.png") no-repeat;
+}
+
+li a {
+  color: green;
+}

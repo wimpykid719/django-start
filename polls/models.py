@@ -1,4 +1,5 @@
 import datetime
+from django.contrib import admin
 from django.db import models
 from django.utils import timezone
 
@@ -7,6 +8,7 @@ from django.utils import timezone
 # models.modelのサブクラスになる。
 # Choiceの親テーブルになる。
 class Question(models.Model):
+
   # クラス変数を定義する。データベースフィールドを表現している。
   # Charフィールドは文字のフィールド
   question_text = models.CharField(max_length=200)
@@ -20,6 +22,12 @@ class Question(models.Model):
     # adminでオブジェクトを表現する際にも使用されるので追加する必要がある。
     return self.question_text
   
+  # メソッドをデコレートする
+  @admin.display(
+    boolean=True,
+    ordering='pub_date',
+    description='Published recently',
+  )
   def was_published_recently(self):
     now = timezone.now()
     # now - datetime.timedelta(days=1)は今の時間から一日引いた日付を出す。
