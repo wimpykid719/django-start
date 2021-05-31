@@ -14,7 +14,7 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now(), choice__isnull=False).distinct().order_by('-pub_date')[:5]
 
 
 # 汎用リファクタリング前
@@ -29,6 +29,9 @@ class DetailView(generic.DetailView):
     # テンプレートで変数にアクセスする際はquestionになる。
     model = Question
     template_name = 'polls/detail.html'
+    def get_queryset(self):
+        print(Question.objects)
+        return Question.objects.filter(pub_date__lte=timezone.now(), choice__isnull=False).distinct()
 
 
 # def detail(request, question_id):

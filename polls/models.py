@@ -5,6 +5,7 @@ from django.utils import timezone
 # Create your models here.
 # 各モデルがmodels.Modelを継承して使っている。
 # models.modelのサブクラスになる。
+# Choiceの親テーブルになる。
 class Question(models.Model):
   # クラス変数を定義する。データベースフィールドを表現している。
   # Charフィールドは文字のフィールド
@@ -26,11 +27,14 @@ class Question(models.Model):
     # pub_dateが現在時刻より過去で現在時刻から一日以内の場合はTrueを返すメソッド
     return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
+# foreignKeyが使用されているのでQuestionの子テーブルになる。
 class Choice(models.Model):
 
   # これはChoiceがQuestionに関連付けられている事を伝えている。
   # データベースの多対一、多対多、一対一のようなデータベースリレーションシップに対応する。
   # Question ← → Choiseと双方向のやりとりが可能となる。
+  # questionには親テーブルQuestion格納されている値しか使えなくてそれ以外のデータを追加しようとするとエラーになる。
+  # なのでQuestion側で新しくデータを追加する分にはなんの問題もない。
   question = models.ForeignKey(Question, on_delete=models.CASCADE)
   choice_text = models.CharField(max_length=200)
   votes = models.IntegerField(default=0)
